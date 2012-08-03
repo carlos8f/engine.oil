@@ -1,0 +1,23 @@
+{
+  "author": "Carlos Rodriguez <carlos@s8f.org> (http://s8f.org/)",
+  "name": "oil",
+  "description": "Makes running with engine.io a little slicker",
+  "version": "0.0.0",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/carlos8f/engine.oil.git"
+  },
+  "dependencies": {
+    "engine.io": "~0.1.2",
+    "buffet": "~0.3.5"
+  },
+  "keywords": ["socket", "engine.io", "websocket", "realtime"],
+  "devDependencies": {
+    "engine.io-client": "~0.1.2"
+  },
+  "license": "MIT",
+  "optionalDependencies": {},
+  "engines": {
+    "node": ">= 0.6.0"
+  }
+}
