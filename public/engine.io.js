@@ -2473,12 +2473,16 @@ function Client(options) {
   this.options.reconnectTimeout = this.reconnectTimeout = this.options.reconnectTimeout || 1000;
   this.options.reconnectBackoff || (this.options.reconnectBackoff = 1.7);
   this.connected = false;
+  this.reconnecting = false;
   this.connect();
 }
 eio.util.inherits(Client, eio.EventEmitter);
 exports.Client = Client;
 
 Client.prototype.connect = function() {
+  if (this.socket) {
+    this.socket.removeAllListeners();
+  }
   this.socket = new eio.Socket(this.options);
   var self = this;
   this.socket.on('open', function() {
@@ -2492,8 +2496,20 @@ Client.prototype.connect = function() {
     if (reason === 'forced close') {
       self.emit('close', reason, desc);
     }
+    else if (self.reconnectAttempts === 0) {
+      self.emit('reconnecting');
+      self.reconnectAttempts++;
+      self.connect();
+    }
     else {
-      self.reconnect();
+      self.reconnectAttempts++;
+      self.reconnectTimeout *= self.options.reconnectBackoff;
+      setTimeout(function() {
+        if (self.connected) {
+          return;
+        }
+        self.connect();
+      }, self.reconnectTimeout);
     }
   });
   this.socket.on('error', function(err) {
@@ -2505,21 +2521,6 @@ Client.prototype.connect = function() {
       self.emit.apply(self, [unpacked.ev].concat(unpacked.args));
     }
   });
-};
-Client.prototype.reconnect = function() {
-  if (this.connected) {
-    return;
-  }
-  if (this.reconnectAttempts === 0) {
-    this.emit('reconnecting');
-  }
-  this.reconnectAttempts++;
-  this.connect();
-  var self = this;
-  self.reconnectTimeout *= self.options.reconnectBackoff;
-  setTimeout(function() {
-    self.reconnect();
-  }, self.reconnectTimeout);
 };
 Client.prototype.send = function(name, data) {
   this.socket.send(JSON.stringify(hydration.dehydrate({ev: name, args: Array.prototype.slice.call(arguments, 1)})));
