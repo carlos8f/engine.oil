@@ -7,11 +7,15 @@
     "type": "git",
     "url": "git://github.com/carlos8f/engine.oil.git"
   },
+  "main": "./lib/engine.oil",
   "dependencies": {
     "engine.io": "~0.1.2",
     "buffet": "~0.3.5",
-    "hydration": "~0.3.0"
+    "hydration": "~0.3.0",
+    "browserbuild": "~0.5.0",
+    "browserify": "~1.14.4"
   },
+  "browserify": "./client/engine.oil-client",
   "keywords": [
     "socket",
     "engine.io",
