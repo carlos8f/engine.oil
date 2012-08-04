@@ -38,7 +38,7 @@ Client.prototype.connect = function() {
     self.emit('error', err);
   });
   this.socket.on('message', function(msg) {
-    var unpacked = JSON.parse(msg), func;
+    var unpacked = JSON.parse(msg);
     if (unpacked.ev) {
       self.emit.apply(self, [unpacked.ev].concat(unpacked.args));
     }
