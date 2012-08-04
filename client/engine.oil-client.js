@@ -38,7 +38,7 @@ Client.prototype.connect = function() {
     self.emit('error', err);
   });
   this.socket.on('message', function(msg) {
-    var unpacked = JSON.parse(msg);
+    var unpacked = hydration.hydrate(JSON.parse(msg))
     if (unpacked.ev) {
       self.emit.apply(self, [unpacked.ev].concat(unpacked.args));
     }
@@ -60,7 +60,7 @@ Client.prototype.reconnect = function() {
   }, self.reconnectTimeout);
 };
 Client.prototype.send = function(name, data) {
-  this.socket.send(JSON.stringify({ev: name, args: Array.prototype.slice.call(arguments, 1)}));
+  this.socket.send(JSON.stringify(hydration.dehydrate({ev: name, args: Array.prototype.slice.call(arguments, 1)})));
 };
 Client.prototype.close = function(reason, desc) {
   this.socket.close(reason, desc);

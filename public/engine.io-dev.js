@@ -2461,6 +2461,125 @@ exports.qs = function (obj) {
 
 });if ("undefined" != typeof module) { module.exports = require('engine.io-client'); } else { eio = require('engine.io-client'); }
 })();
+(function(exports) {
+
+  function dehydrate(input) {
+    var obj = {}, k, typeCount = 0;
+    for (k in input) {
+      if (!input.hasOwnProperty(k)) continue;
+      obj[k] = input[k];
+    }
+    obj._types = {};
+
+    for (k in obj) {
+      if (!obj.hasOwnProperty(k)) continue;
+      if (k == '_types') {
+        continue
+      }
+      var type = getType(obj[k]);
+      // Strings are implied
+      if (type !== 'string') {
+        obj._types[k] = type;
+        typeCount++;
+      }
+      switch (type) {
+        case 'array':
+          // Convert to an object so we can store types.
+          var newObj = {};
+          for (var i in obj[k]) {
+            newObj[i] = obj[k][i];
+          }
+          obj[k] = newObj;
+          obj[k] = dehydrate(obj[k]);
+          break;
+        case 'regexp':
+          obj[k] = obj[k].toString();
+          break;
+        case 'object':
+          obj[k] = dehydrate(obj[k]);
+          break;
+      }
+    }
+    
+    if (typeCount === 0) {
+      delete obj._types;
+    }
+    return obj;
+  };
+  exports.dehydrate = dehydrate;
+
+  function getType(obj) {
+    if (typeof obj === 'object') {
+      var str = Object.prototype.toString.call(obj);
+      if (str === '[object Array]') {
+        return 'array';
+      }
+      else if (str === '[object RegExp]') {
+        return 'regexp';
+      }
+      else if (str === '[object Date]') {
+        return 'date';
+      }
+      return 'object';
+    }
+    return typeof obj;
+  }
+
+  function hydrate(input) {
+    var obj = {}, k;
+    for (k in input) {
+      if (!input.hasOwnProperty(k)) continue;
+      obj[k] = input[k];
+    }
+    if (!obj._types) {
+      return obj;
+    }
+    for (k in obj) {
+      if (!obj.hasOwnProperty(k)) continue;
+      if (k == '_types') {
+        continue;
+      }
+      switch (obj._types[k]) {
+        case 'boolean':
+          if (typeof obj[k] === 'string') {
+            if (obj[k] === 'false' || obj[k] === '0') {
+              obj[k] = false;
+            }
+            else {
+              obj[k] = true;
+            }
+          }
+          break;
+        case 'date':
+          if (typeof obj[k] == 'string') {
+            obj[k] = new Date(obj[k]);
+          }
+          break;
+        case 'regexp':
+          obj[k] = new RegExp(obj[k].replace(/(^\/|\/$)/g, ''));
+          break;
+        case 'number':
+          obj[k] = parseFloat(obj[k]);
+          break;
+        case 'array':
+          obj[k] = hydrate(obj[k]);
+          // Convert back to array.
+          var newArr = [];
+          for (var i in obj[k]) {
+            newArr.push(obj[k][i]);
+          }
+          obj[k] = newArr;
+          break;
+        case 'object':
+          obj[k] = hydrate(obj[k]);
+          break;
+      }
+    }
+    delete obj._types;
+    return obj;
+  }
+  exports.hydrate = hydrate;
+})((typeof window !== 'undefined' && (window.hydration = {})) || exports);
 (function(){var global = this;
 /*!
  * debug
@@ -2623,7 +2742,7 @@ Client.prototype.connect = function() {
     self.emit('error', err);
   });
   this.socket.on('message', function(msg) {
-    var unpacked = JSON.parse(msg);
+    var unpacked = hydration.hydrate(JSON.parse(msg))
     if (unpacked.ev) {
       self.emit.apply(self, [unpacked.ev].concat(unpacked.args));
     }
@@ -2645,7 +2764,7 @@ Client.prototype.reconnect = function() {
   }, self.reconnectTimeout);
 };
 Client.prototype.send = function(name, data) {
-  this.socket.send(JSON.stringify({ev: name, args: Array.prototype.slice.call(arguments, 1)}));
+  this.socket.send(JSON.stringify(hydration.dehydrate({ev: name, args: Array.prototype.slice.call(arguments, 1)})));
 };
 Client.prototype.close = function(reason, desc) {
   this.socket.close(reason, desc);

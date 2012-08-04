@@ -10,7 +10,8 @@
   "main": "./lib/engine.oil",
   "dependencies": {
     "engine.io": "git+https://github.com/carlos8f/engine.io.git",
-    "buffet": "~0.3.6"
+    "buffet": "~0.3.6",
+    "hydration": "~0.3.0"
   },
   "keywords": [
     "socket",
