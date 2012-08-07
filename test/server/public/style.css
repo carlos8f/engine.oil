@@ -1,0 +1,16 @@
+body {
+  padding-top: 20px;
+}
+#message {
+  width: 400px;
+}
+#nick {
+  width: 200px;
+}
+#lines, #nicknames {
+  height: 600px;
+  overflow: auto;
+}
+#lines b {
+  padding-right: 10px;
+}

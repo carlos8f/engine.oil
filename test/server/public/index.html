@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>engine.oil test</title>
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/css/bootstrap-combined.min.css">
+    <link rel="stylesheet" href="/style.css">
+  </head>
+  <body>
+    <div class="main">
+      <div class="container">
+        <div class="row-fluid">
+          <div class="span12">
+            <header class="jumbotron subhead">
+              <h1>engine.oil test</h1>
+              <form id="set-nickname">
+                <fieldset class="control-group">
+                  <div class="input-append">
+                    <input name="nick" class="span2" size="50" type="text" id="nick" placeholder="Choose your nickname&hellip;"><input type="submit" class="btn" value="Enter chat">
+                    <span id="nickname-err" class="hide help-inline">Nickname already taken.</span>
+                  </div>
+                </fieldset>
+              </form>
+            </header>
+          </div>
+
+          <div id="messages" class="hide">
+            <div class="span8 well" id="lines"></div>
+            <div class="span4 well" id="nicknames"></div>
+          </div>
+
+          <form id="send-message" class="form-horizontal hide">
+            <fieldset class="control-group well">
+              <label class="control-label" for="message"><b><span id="nick-display"></span></b></label>
+              <div class="controls">
+                <div class="input-append">
+                  <input class="span2" size="50" type="text" id="message" name="message"><input type="submit" class="btn" value="Send">
+                </div>
+              </div>
+            </fieldset>
+          </form>
+        </div>
+      </div>
+    </div>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/jquery.js"></script>
+    <script src="//netdna.bootstrapcdn.com/twitter-bootstrap/2.0.4/js/bootstrap.min.js"></script>
+    <script src="/engine.io.js"></script>
+    <script src="//ajax.cdnjs.com/ajax/libs/json2/20110223/json2.js"></script>
+    <script src="/main.js"></script>
+  </body>
+</html>
