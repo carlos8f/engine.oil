@@ -21,7 +21,10 @@
   ],
   "devDependencies": {
     "engine.io-client": "~0.1.2",
-    "browserbuild": "~0.5.0"
+    "browserbuild": "~0.5.0",
+    "mocha": "*",
+    "optimist": "~0.3.4",
+    "zombie": "~1.3.1"
   },
   "license": "MIT",
   "optionalDependencies": {},

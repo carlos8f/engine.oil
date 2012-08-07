@@ -2480,7 +2480,35 @@ eio.util.inherits(Client, eio.EventEmitter);
 exports.Client = Client;
 
 exports.connect = function(options) {
+  options || (options = {});
+  if (!options.port && document && document.location) {
+    options.port = document.location.port;
+  }
+  if (!options.host && document.domain) {
+    options.host = document.domain;
+  }
   return new Client(options);
+};
+
+function getURI(options) {
+  var protocol = options.protocol
+    , host = options.host
+    , port = options.port;
+
+  if ('document' in global) {
+    host = host || document.domain;
+    port = port || (protocol == 'https'
+      && document.location.protocol !== 'https:' ? 443 : document.location.port);
+  }
+  else {
+    host = host || 'localhost';
+
+    if (!port && protocol == 'https') {
+      port = 443;
+    }
+  }
+
+  return (protocol || 'http') + '://' + host + ':' + (port || 80);
 };
 
 Client.prototype.connect = function() {
