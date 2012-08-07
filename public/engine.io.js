@@ -2479,6 +2479,10 @@ function Client(options) {
 eio.util.inherits(Client, eio.EventEmitter);
 exports.Client = Client;
 
+exports.connect = function(options) {
+  return new Client(options);
+};
+
 Client.prototype.connect = function() {
   if (this.socket) {
     this.socket.removeAllListeners();
