@@ -2520,6 +2520,9 @@ exports.qs = function (obj) {
       else if (str === '[object Date]') {
         return 'date';
       }
+      else if (str === '[object Null]') {
+        return 'null';
+      }
       return 'object';
     }
     return typeof obj;
@@ -2572,6 +2575,9 @@ exports.qs = function (obj) {
           break;
         case 'object':
           obj[k] = hydrate(obj[k]);
+          break;
+        case 'null':
+          obj[k] = null;
           break;
       }
     }
