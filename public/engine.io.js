@@ -2459,7 +2459,45 @@ exports.qs = function (obj) {
   }
   exports.hydrate = hydrate;
 })((typeof window !== 'undefined' && (window.hydration = {})) || exports);
-(function(){var global = this;function debug(){return debug};function require(p, parent){ var path = require.resolve(p) , mod = require.modules[path]; if (!mod) throw new Error('failed to require "' + p + '" from ' + parent); if (!mod.exports) { mod.exports = {}; mod.call(mod.exports, mod, mod.exports, require.relative(path), global); } return mod.exports;}require.modules = {};require.resolve = function(path){ var orig = path , reg = path + '.js' , index = path + '/index.js'; return require.modules[reg] && reg || require.modules[index] && index || orig;};require.register = function(path, fn){ require.modules[path] = fn;};require.relative = function(parent) { return function(p){ if ('debug' == p) return debug; if ('.' != p.charAt(0)) return require(p); var path = parent.split('/') , segs = p.split('/'); path.pop(); for (var i = 0; i < segs.length; i++) { var seg = segs[i]; if ('..' == seg) path.pop(); else if ('.' != seg) path.push(seg); } return require(path.join('/'), parent); };};require.register("engine.oil-client.js", function(module, exports, require, global){
+(function(global) {
+  /**
+   * id generator
+   * ------------
+   *
+   * @exports {Function} id generator function
+   */
+
+  /**
+   * @param [len] {Number} Length of the ID to generate.
+   * @return {String} A unique alphanumeric string.
+   */
+  function idgen(len, chars) {
+    len = len || 8;
+    chars = chars || 'ABCDEFGHIJKLMNOPQRSTUVWYXZabcdefghijklmnopqrstuvwyxz0123456789';
+    var ret = ''
+      , range = chars.length - 1
+      , len_left = len
+      ;
+    while (len_left--) {
+      ret += chars[Math.round(Math.random() * range)];
+    }
+    return ret;
+  };
+  global.idgen = idgen;
+
+  function idgen_hex(len) {
+    len = len || 16;
+    return idgen(len, '0123456789abcdef');
+  };
+  global.idgen_hex = idgen_hex;
+
+})((typeof window !== 'undefined' && window) || module.exports);
+
+if (typeof module !== 'undefined') {
+  var idgen_hex = module.exports.idgen_hex;
+  module.exports = module.exports.idgen;
+  module.exports.hex = idgen_hex;
+}(function(){var global = this;function debug(){return debug};function require(p, parent){ var path = require.resolve(p) , mod = require.modules[path]; if (!mod) throw new Error('failed to require "' + p + '" from ' + parent); if (!mod.exports) { mod.exports = {}; mod.call(mod.exports, mod, mod.exports, require.relative(path), global); } return mod.exports;}require.modules = {};require.resolve = function(path){ var orig = path , reg = path + '.js' , index = path + '/index.js'; return require.modules[reg] && reg || require.modules[index] && index || orig;};require.register = function(path, fn){ require.modules[path] = fn;};require.relative = function(parent) { return function(p){ if ('debug' == p) return debug; if ('.' != p.charAt(0)) return require(p); var path = parent.split('/') , segs = p.split('/'); path.pop(); for (var i = 0; i < segs.length; i++) { var seg = segs[i]; if ('..' == seg) path.pop(); else if ('.' != seg) path.push(seg); } return require(path.join('/'), parent); };};require.register("engine.oil-client.js", function(module, exports, require, global){
 function Client(options) {
   options || (options = {});
   eio.EventEmitter.call(this);
@@ -2555,10 +2593,61 @@ Client.prototype.connect = function() {
   });
 };
 Client.prototype.send = function(name, data) {
-  this.socket.send(JSON.stringify(hydration.dehydrate({ev: name, args: Array.prototype.slice.call(arguments, 1)})));
+  var args = Array.prototype.slice.call(arguments, 1), cb;
+  if (typeof args[args.length - 1] === 'function') {
+    cb = args.pop();
+  }
+  var envelope = {
+    ev: name,
+    args: args
+  };
+  if (cb) {
+    envelope.ack = idgen();
+    this.on(envelope.ack, cb);
+  }
+  this.socket.send(JSON.stringify(hydration.dehydrate(envelope)));
 };
 Client.prototype.close = function(reason, desc) {
   this.socket.close(reason, desc);
 };
 });oil = require('engine.oil-client');
 })();
+(function(global) {
+  /**
+   * id generator
+   * ------------
+   *
+   * @exports {Function} id generator function
+   */
+
+  /**
+   * @param [len] {Number} Length of the ID to generate.
+   * @return {String} A unique alphanumeric string.
+   */
+  function idgen(len, chars) {
+    len = len || 8;
+    chars = chars || 'ABCDEFGHIJKLMNOPQRSTUVWYXZabcdefghijklmnopqrstuvwyxz0123456789';
+    var ret = ''
+      , range = chars.length - 1
+      , len_left = len
+      ;
+    while (len_left--) {
+      ret += chars[Math.round(Math.random() * range)];
+    }
+    return ret;
+  };
+  global.idgen = idgen;
+
+  function idgen_hex(len) {
+    len = len || 16;
+    return idgen(len, '0123456789abcdef');
+  };
+  global.idgen_hex = idgen_hex;
+
+})((typeof window !== 'undefined' && window) || module.exports);
+
+if (typeof module !== 'undefined') {
+  var idgen_hex = module.exports.idgen_hex;
+  module.exports = module.exports.idgen;
+  module.exports.hex = idgen_hex;
+}

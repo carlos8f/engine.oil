@@ -93,7 +93,19 @@ Client.prototype.connect = function() {
   });
 };
 Client.prototype.send = function(name, data) {
-  this.socket.send(JSON.stringify(hydration.dehydrate({ev: name, args: Array.prototype.slice.call(arguments, 1)})));
+  var args = Array.prototype.slice.call(arguments, 1), cb;
+  if (typeof args[args.length - 1] === 'function') {
+    cb = args.pop();
+  }
+  var envelope = {
+    ev: name,
+    args: args
+  };
+  if (cb) {
+    envelope.ack = idgen();
+    this.on(envelope.ack, cb);
+  }
+  this.socket.send(JSON.stringify(hydration.dehydrate(envelope)));
 };
 Client.prototype.close = function(reason, desc) {
   this.socket.close(reason, desc);

@@ -21,18 +21,6 @@ client.on('user message', message);
 client.on('reconnecting', function() {
   message('System', 'Attempting to re-connect to the server');
 });
-client.on('nickname', function(set) {
-  if (!set) {
-    $('#set-nickname').css('display', 'none');
-    $('#send-message').removeClass('hide');
-    $('#messages').removeClass('hide');
-    clear();
-    $('#nick-display').text(nick);
-    return;
-  }
-  $('#set-nickname fieldset').addClass('error');
-  $('#nickname-err').removeClass('hide');
-});
 
 function message(from, msg) {
   $('#lines').append($('<p>').append($('<b>').text(from), msg));
@@ -50,7 +38,18 @@ $(function() {
   });
   $('#set-nickname').submit(function(e) {
     nick = $('#nick').val();
-    client.send('nickname', nick);
+    client.send('nickname', nick, function(set) {
+      if (!set) {
+        $('#set-nickname').css('display', 'none');
+        $('#send-message').removeClass('hide');
+        $('#messages').removeClass('hide');
+        clear();
+        $('#nick-display').text(nick);
+        return;
+      }
+      $('#set-nickname fieldset').addClass('error');
+      $('#nickname-err').removeClass('hide');
+    });
     return false;
   });
 

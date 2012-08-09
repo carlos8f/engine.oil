@@ -23,14 +23,14 @@ io.on('connection', function(socket) {
     socket.oil.in('chat').broadcast('user message', nicknames[socket.id], msg);
   });
 
-  socket.oil.on('nickname', function(nick) {
+  socket.oil.on('nickname', function(nick, cb) {
     if (nicknameTaken(socket.id, nick)) {
-      socket.oil.send('nickname', true);
+      cb(true);
     }
     else {
-      socket.oil.send('nickname', false);
       socket.oil.join('chat');
       nicknames[socket.id] = nick;
+      cb(false);
       socket.oil.broadcast('announcement', nick + ' connected');
       sendNicks();
     }
