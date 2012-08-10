@@ -97,6 +97,9 @@ Client.prototype.send = function(ev, args) {
     args = ev;
     ev = args.shift();
   }
+  else {
+    args = Array.prototype.slice.call(arguments, 1);
+  }
   var cb;
   if (typeof args[args.length - 1] === 'function') {
     cb = args.pop();
