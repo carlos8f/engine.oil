@@ -10,13 +10,14 @@ var http = require('http')
 
 var buffet = require('buffet')(pub);
 
-var server = http.createServer(function(req, res) {
-  buffet(req, res, buffet.notFound.bind(null, req, res));
-}).listen(argv.port, function() {
+var server = http.createServer();
+var io = engine.attach(server);
+
+server.on('request', buffet);
+server.listen(argv.port, function() {
   console.log('test server running on port ' + argv.port);
 });
 
-var io = engine.attach(server);
 var nicknames = {};
 io.on('connection', function(socket) {
   socket.oil.on('user message', function(msg) {

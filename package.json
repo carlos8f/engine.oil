@@ -9,9 +9,10 @@
   },
   "main": "./lib/engine.oil",
   "dependencies": {
-    "engine.io": "git+https://github.com/carlos8f/engine.io.git",
+    "engine.io": "~0.2.0",
     "buffet": "~0.3.6",
-    "hydration": "~0.3.0"
+    "hydration": "~0.3.0",
+    "debug": "~0.7.0"
   },
   "keywords": [
     "socket",
