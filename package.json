@@ -20,7 +20,7 @@
     "realtime"
   ],
   "devDependencies": {
-    "engine.io-client": "~0.1.2",
+    "engine.io-client": "~0.2.0",
     "browserbuild": "~0.5.0",
     "mocha": "*",
     "optimist": "~0.3.4",
