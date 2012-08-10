@@ -92,13 +92,17 @@ Client.prototype.connect = function() {
     }
   });
 };
-Client.prototype.send = function(name, data) {
-  var args = Array.prototype.slice.call(arguments, 1), cb;
+Client.prototype.send = function(ev, args) {
+  if (Object.prototype.toString.call(ev) === '[object Array]') {
+    args = ev;
+    ev = args.shift();
+  }
+  var cb;
   if (typeof args[args.length - 1] === 'function') {
     cb = args.pop();
   }
   var envelope = {
-    ev: name,
+    ev: ev,
     args: args
   };
   if (cb) {
