@@ -9,10 +9,11 @@
   },
   "main": "./lib/engine.oil",
   "dependencies": {
-    "engine.io": "~0.2.0",
+    "engine.io": "~0.1.2",
     "buffet": "~0.3.6",
     "hydration": "~0.3.0",
-    "debug": "~0.7.0"
+    "debug": "~0.7.0",
+    "middler": "0.0.0"
   },
   "keywords": [
     "socket",

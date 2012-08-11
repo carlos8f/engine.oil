@@ -6,14 +6,16 @@ var http = require('http')
     .argv
   , path = require('path')
   , pub = path.resolve(__dirname, './public')
+  , middler = require('middler')
   ;
 
 var buffet = require('buffet')(pub);
 
 var server = http.createServer();
 var io = engine.attach(server);
+middler(server, buffet);
+middler(server, buffet.notFound);
 
-server.on('request', buffet);
 server.listen(argv.port, function() {
   console.log('test server running on port ' + argv.port);
 });
