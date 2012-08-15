@@ -31,7 +31,10 @@ io.on('connection', function(socket) {
       cb(true);
     }
     else {
-      socket.oil.join('chat');
+      // Make sure there is no EventEmitter leak.
+      for (var i = 0; i < 11; i++) {
+        socket.oil.join('chat');
+      }
       nicknames[socket.id] = nick;
       cb(false);
       socket.oil.broadcast('announcement', nick + ' connected');

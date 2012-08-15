@@ -11,6 +11,7 @@ describe('chat test', function() {
     server.stdout.once('data', function(chunk) {
       done();
     });
+    server.stderr.pipe(process.stdout);
   });
   before(function(done) {
     browser1 = new Browser();
