@@ -3,6 +3,8 @@ engine.oil
 
 Makes running with engine.io a little slicker
 
+[![build status](https://secure.travis-ci.org/carlos8f/engine.oil.png)](http://travis-ci.org/carlos8f/engine.oil)
+
 engine.oil adds
 ---------------
 
