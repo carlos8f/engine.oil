@@ -12,7 +12,7 @@ var http = require('http')
 var buffet = require('buffet')(pub);
 
 var server = http.createServer();
-var io = engine.attach(server);
+var io = engine.attach(server, {transports: ['polling'], allowUpgrades: false});
 middler(server, buffet);
 middler(server, buffet.notFound);
 
