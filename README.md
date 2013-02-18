@@ -19,7 +19,7 @@ engine.oil adds
 API
 ---
 
-@todo
+This project needs docs :) In the mean time, check out an [example chat app](https://github.com/carlos8f/engine.oil/blob/master/test/server/server.js) using oil.
 
 License
 -------
