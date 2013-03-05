@@ -1,6 +1,6 @@
 function Client(options) {
   options || (options = {});
-  eio.EventEmitter.call(this);
+  eio.Emitter.call(this);
   this.reconnectAttempts = 0;
   this.options = {};
   for (var k in options) {
@@ -14,7 +14,7 @@ function Client(options) {
   this.reconnecting = false;
   this.connect();
 }
-eio.util.inherits(Client, eio.EventEmitter);
+eio.util.inherits(Client, eio.Emitter);
 exports.Client = Client;
 
 exports.connect = function(options) {
