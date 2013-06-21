@@ -7,6 +7,9 @@
     "type": "git",
     "url": "git://github.com/carlos8f/engine.oil.git"
   },
+  "scripts": {
+    "test": "make test"
+  },
   "main": "./lib/engine.oil",
   "dependencies": {
     "engine.io": "~0.2.1",
