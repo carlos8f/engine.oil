@@ -12,7 +12,7 @@
   },
   "main": "./lib/engine.oil",
   "dependencies": {
-    "engine.io": "~0.2.1",
+    "engine.io": "~0.6.2",
     "buffet": "~0.3.6",
     "hydration": "~0.3.0",
     "debug": "~0.7.0",
@@ -25,7 +25,7 @@
     "realtime"
   ],
   "devDependencies": {
-    "engine.io-client": "~0.2.1",
+    "engine.io-client": "~0.6.2",
     "browserbuild": "~0.5.0",
     "mocha": "*",
     "optimist": "~0.3.4",
