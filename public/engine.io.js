@@ -64,7 +64,6 @@ require.aliases = {};
 
 require.resolve = function(path) {
   if (path.charAt(0) === '/') path = path.slice(1);
-  var index = path + '/index.js';
 
   var paths = [
     path,
@@ -77,10 +76,7 @@ require.resolve = function(path) {
   for (var i = 0; i < paths.length; i++) {
     var path = paths[i];
     if (require.modules.hasOwnProperty(path)) return path;
-  }
-
-  if (require.aliases.hasOwnProperty(index)) {
-    return require.aliases[index];
+    if (require.aliases.hasOwnProperty(path)) return require.aliases[path];
   }
 };
 
@@ -709,7 +705,7 @@ function coerce(val) {
 if (window.localStorage) debug.enable(localStorage.debug);
 
 });
-require.register("engine.io/lib/index.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/index.js", function(exports, require, module){
 
 module.exports = require('./socket');
 
@@ -722,7 +718,7 @@ module.exports = require('./socket');
 module.exports.parser = require('engine.io-parser');
 
 });
-require.register("engine.io/lib/socket.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/socket.js", function(exports, require, module){
 /**
  * Module dependencies.
  */
@@ -1322,7 +1318,7 @@ Socket.prototype.filterUpgrades = function (upgrades) {
 };
 
 });
-require.register("engine.io/lib/transport.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/transport.js", function(exports, require, module){
 
 /**
  * Module dependencies.
@@ -1466,7 +1462,7 @@ Transport.prototype.onClose = function () {
 };
 
 });
-require.register("engine.io/lib/emitter.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/emitter.js", function(exports, require, module){
 
 /**
  * Module dependencies.
@@ -1505,7 +1501,7 @@ Emitter.prototype.removeEventListener = Emitter.prototype.off;
 Emitter.prototype.removeListener = Emitter.prototype.off;
 
 });
-require.register("engine.io/lib/util.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/util.js", function(exports, require, module){
 /**
  * Status of page load.
  */
@@ -1797,7 +1793,7 @@ exports.qsParse = function(qs){
 };
 
 });
-require.register("engine.io/lib/transports/index.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/transports/index.js", function(exports, require, module){
 
 /**
  * Module dependencies
@@ -1862,7 +1858,7 @@ function polling (opts) {
 };
 
 });
-require.register("engine.io/lib/transports/polling.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/transports/polling.js", function(exports, require, module){
 /**
  * Module dependencies.
  */
@@ -2092,7 +2088,7 @@ Polling.prototype.uri = function(){
 };
 
 });
-require.register("engine.io/lib/transports/polling-xhr.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/transports/polling-xhr.js", function(exports, require, module){
 /**
  * Module requirements.
  */
@@ -2395,7 +2391,7 @@ if (xobject) {
 }
 
 });
-require.register("engine.io/lib/transports/polling-jsonp.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/transports/polling-jsonp.js", function(exports, require, module){
 
 /**
  * Module requirements.
@@ -2630,7 +2626,7 @@ JSONPPolling.prototype.doWrite = function (data, fn) {
 };
 
 });
-require.register("engine.io/lib/transports/websocket.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/transports/websocket.js", function(exports, require, module){
 /**
  * Module dependencies.
  */
@@ -2840,7 +2836,7 @@ function ws(){
 }
 
 });
-require.register("engine.io/lib/transports/flashsocket.js", function(exports, require, module){
+require.register("LearnBoost-engine.io-client/lib/transports/flashsocket.js", function(exports, require, module){
 /**
  * Module dependencies.
  */
@@ -3102,312 +3098,222 @@ function load (arr, fn) {
 };
 
 });
-require.alias("component-emitter/index.js", "engine.io/deps/emitter/index.js");
-require.alias("component-emitter/index.js", "emitter/index.js");
-
-require.alias("component-indexof/index.js", "engine.io/deps/indexof/index.js");
-require.alias("component-indexof/index.js", "indexof/index.js");
-
-require.alias("LearnBoost-engine.io-protocol/lib/index.js", "engine.io/deps/engine.io-parser/lib/index.js");
-require.alias("LearnBoost-engine.io-protocol/lib/keys.js", "engine.io/deps/engine.io-parser/lib/keys.js");
-require.alias("LearnBoost-engine.io-protocol/lib/index.js", "engine.io/deps/engine.io-parser/index.js");
-require.alias("LearnBoost-engine.io-protocol/lib/index.js", "engine.io-parser/index.js");
-require.alias("LearnBoost-engine.io-protocol/lib/index.js", "LearnBoost-engine.io-protocol/index.js");
-
-require.alias("visionmedia-debug/index.js", "engine.io/deps/debug/index.js");
-require.alias("visionmedia-debug/debug.js", "engine.io/deps/debug/debug.js");
-require.alias("visionmedia-debug/index.js", "debug/index.js");
-
-require.alias("engine.io/lib/index.js", "engine.io/index.js");
-
-if (typeof exports == "object") {
-  module.exports = require("engine.io");
-} else if (typeof define == "function" && define.amd) {
-  define(function(){ return require("engine.io"); });
-} else {
-  this["eio"] = require("engine.io");
-}})();(function(exports) {
-
-  function dehydrate(input) {
-    var obj = {}, k, typeCount = 0;
-    for (k in input) {
-      if (!input.hasOwnProperty(k)) continue;
-      obj[k] = input[k];
-    }
-    obj._types = {};
-
-    for (k in obj) {
-      if (!obj.hasOwnProperty(k)) continue;
-      if (k == '_types') {
-        continue
-      }
-      var type = getType(obj[k]);
-      // Strings are implied
-      if (type !== 'string') {
-        obj._types[k] = type;
-        typeCount++;
-      }
-      switch (type) {
-        case 'array':
-          // Convert to an object so we can store types.
-          var newObj = {};
-          for (var i in obj[k]) {
-            newObj[i] = obj[k][i];
-          }
-          obj[k] = newObj;
-          obj[k] = dehydrate(obj[k]);
-          break;
-        case 'regexp':
-          obj[k] = obj[k].toString();
-          break;
-        case 'object':
-          obj[k] = dehydrate(obj[k]);
-          break;
-      }
-    }
-    
-    if (typeCount === 0) {
-      delete obj._types;
-    }
-    return obj;
-  };
-  exports.dehydrate = dehydrate;
-
-  function getType(obj) {
-    if (typeof obj === 'object') {
-      var str = Object.prototype.toString.call(obj);
-      if (str === '[object Array]') {
-        return 'array';
-      }
-      else if (str === '[object RegExp]') {
-        return 'regexp';
-      }
-      else if (str === '[object Date]') {
-        return 'date';
-      }
-      else if (str === '[object Null]') {
-        return 'null';
-      }
-      return 'object';
-    }
-    return typeof obj;
+require.register("carlos8f-hydration/index.js", function(exports, require, module){
+function dehydrate(input) {
+  var obj = {}, k, typeCount = 0;
+  for (k in input) {
+    if (!input.hasOwnProperty(k)) continue;
+    obj[k] = input[k];
   }
+  obj.__proto__ = input.__proto__; // so prototype.toJSON() will still fire
+  obj._types = {};
 
-  function hydrate(input) {
-    var obj = {}, k;
-    for (k in input) {
-      if (!input.hasOwnProperty(k)) continue;
-      obj[k] = input[k];
+  for (k in obj) {
+    if (!obj.hasOwnProperty(k)) continue;
+    if (k == '_types') {
+      continue
     }
-    if (!obj._types) {
-      return obj;
+    var type = getType(obj[k]);
+    // Strings are implied
+    if (type !== 'string') {
+      obj._types[k] = type;
+      typeCount++;
     }
-    for (k in obj) {
-      if (!obj.hasOwnProperty(k)) continue;
-      if (k == '_types') {
-        continue;
-      }
-      switch (obj._types[k]) {
-        case 'boolean':
-          if (typeof obj[k] === 'string') {
-            if (obj[k] === 'false' || obj[k] === '0') {
-              obj[k] = false;
-            }
-            else {
-              obj[k] = true;
-            }
-          }
-          break;
-        case 'date':
-          if (typeof obj[k] == 'string') {
-            obj[k] = new Date(obj[k]);
-          }
-          break;
-        case 'regexp':
-          obj[k] = new RegExp(obj[k].replace(/(^\/|\/$)/g, ''));
-          break;
-        case 'number':
-          obj[k] = parseFloat(obj[k]);
-          break;
-        case 'array':
-          obj[k] = hydrate(obj[k]);
-          // Convert back to array.
-          var newArr = [];
-          for (var i in obj[k]) {
-            newArr.push(obj[k][i]);
-          }
-          obj[k] = newArr;
-          break;
-        case 'object':
-          obj[k] = hydrate(obj[k]);
-          break;
-        case 'null':
-          obj[k] = null;
-          break;
-      }
+    switch (type) {
+      case 'array':
+        // Convert to an object so we can store types.
+        var newObj = {};
+        for (var i in obj[k]) {
+          newObj[i] = obj[k][i];
+        }
+        obj[k] = newObj;
+        obj[k] = dehydrate(obj[k]);
+        break;
+      case 'regexp':
+        obj[k] = obj[k].toString();
+        break;
+      case 'object':
+        obj[k] = dehydrate(obj[k]);
+        break;
     }
+  }
+  
+  if (typeCount === 0) {
     delete obj._types;
+  }
+  return obj;
+};
+exports.dehydrate = dehydrate;
+
+function getType(obj) {
+  if (typeof obj === 'object') {
+    var str = Object.prototype.toString.call(obj);
+    if (str === '[object Array]') {
+      return 'array';
+    }
+    else if (str === '[object RegExp]') {
+      return 'regexp';
+    }
+    else if (str === '[object Date]') {
+      return 'date';
+    }
+    else if (str === '[object Null]') {
+      return 'null';
+    }
+    return 'object';
+  }
+  return typeof obj;
+}
+
+function hydrate(input) {
+  var obj = {}, k;
+  for (k in input) {
+    if (!input.hasOwnProperty(k)) continue;
+    obj[k] = input[k];
+  }
+  if (!obj._types) {
     return obj;
   }
-  exports.hydrate = hydrate;
-})((typeof window !== 'undefined' && (window.hydration = {})) || exports);
-(function(global) {
-  /**
-   * id generator
-   * ------------
-   *
-   * @exports {Function} id generator function
-   */
-
-  /**
-   * @param [len] {Number} Length of the ID to generate.
-   * @return {String} A unique alphanumeric string.
-   */
-  function idgen(len, chars) {
-    len = len || 8;
-    chars = chars || 'ABCDEFGHIJKLMNOPQRSTUVWYXZabcdefghijklmnopqrstuvwyxz0123456789';
-    var ret = ''
-      , range = chars.length - 1
-      , len_left = len
-
-    while (len_left--) {
-      ret += chars.charAt(Math.round(Math.random() * range));
+  for (k in obj) {
+    if (!obj.hasOwnProperty(k)) continue;
+    if (k == '_types') {
+      continue;
     }
-    return ret;
-  };
-  global.idgen = idgen;
-
-  function idgen_hex(len) {
-    len = len || 16;
-    return idgen(len, '0123456789abcdef');
-  };
-  global.idgen_hex = idgen_hex;
-
-})((typeof window !== 'undefined' && window) || module.exports);
-
-if (typeof module !== 'undefined') {
-  var idgen_hex = module.exports.idgen_hex;
-  module.exports = module.exports.idgen;
-  module.exports.hex = idgen_hex;
-}(function(){var global = this;function debug(){return debug};function require(p, parent){ var path = require.resolve(p) , mod = require.modules[path]; if (!mod) throw new Error('failed to require "' + p + '" from ' + parent); if (!mod.exports) { mod.exports = {}; mod.call(mod.exports, mod, mod.exports, require.relative(path), global); } return mod.exports;}require.modules = {};require.resolve = function(path){ var orig = path , reg = path + '.js' , index = path + '/index.js'; return require.modules[reg] && reg || require.modules[index] && index || orig;};require.register = function(path, fn){ require.modules[path] = fn;};require.relative = function(parent) { return function(p){ if ('debug' == p) return debug; if ('.' != p.charAt(0)) return require(p); var path = parent.split('/') , segs = p.split('/'); path.pop(); for (var i = 0; i < segs.length; i++) { var seg = segs[i]; if ('..' == seg) path.pop(); else if ('.' != seg) path.push(seg); } return require(path.join('/'), parent); };};require.register("engine.oil-client.js", function(module, exports, require, global){
-function Client(options) {
-  options || (options = {});
-  eio.EventEmitter.call(this);
-  this.reconnectAttempts = 0;
-  this.options = {};
-  for (var k in options) {
-    if (options.hasOwnProperty(k)) {
-      this.options[k] = options[k];
+    switch (obj._types[k]) {
+      case 'boolean':
+        if (typeof obj[k] === 'string') {
+          if (obj[k] === 'false' || obj[k] === '0') {
+            obj[k] = false;
+          }
+          else {
+            obj[k] = true;
+          }
+        }
+        break;
+      case 'date':
+        if (typeof obj[k] == 'string') {
+          obj[k] = new Date(obj[k]);
+        }
+        break;
+      case 'regexp':
+        obj[k] = new RegExp(obj[k].replace(/(^\/|\/$)/g, ''));
+        break;
+      case 'number':
+        obj[k] = parseFloat(obj[k]);
+        break;
+      case 'array':
+        obj[k] = hydrate(obj[k]);
+        // Convert back to array.
+        var newArr = [];
+        for (var i in obj[k]) {
+          newArr.push(obj[k][i]);
+        }
+        obj[k] = newArr;
+        break;
+      case 'object':
+        obj[k] = hydrate(obj[k]);
+        break;
+      case 'null':
+        obj[k] = null;
+        break;
     }
   }
-  this.options.reconnectTimeout = this.reconnectTimeout = this.options.reconnectTimeout || 1000;
-  this.options.reconnectBackoff || (this.options.reconnectBackoff = 1.7);
-  this.connected = false;
-  this.reconnecting = false;
-  this.connect();
+  delete obj._types;
+  return obj;
 }
-eio.util.inherits(Client, eio.EventEmitter);
-exports.Client = Client;
+exports.hydrate = hydrate;
 
-exports.connect = function(options) {
-  options || (options = {});
-  if (!options.port && document && document.location) {
-    options.port = document.location.port;
-  }
-  if (!options.host && document.domain) {
-    options.host = document.domain;
-  }
-  return new Client(options);
-};
+});
+require.register("carlos8f-node-idgen/index.js", function(exports, require, module){
+/**
+ * id generator
+ * ------------
+ *
+ * @exports {Function} id generator function
+ */
 
-function getURI(options) {
-  var protocol = options.protocol
-    , host = options.host
-    , port = options.port;
+/**
+ * @param [len] {Number} Length of the ID to generate.
+ * @return {String} A unique alphanumeric string.
+ */
+function idgen(len, chars) {
+  len || (len = 8);
+  chars || (chars = 'ABCDEFGHIJKLMNOPQRSTUVWYXZabcdefghijklmnopqrstuvwyxz0123456789');
+  var ret = ''
+    , range = chars.length - 1
+    , len_left = len
+    , idx
+    , useTime = len > 15
 
-  if ('document' in global) {
-    host = host || document.domain;
-    port = port || (protocol == 'https'
-      && document.location.protocol !== 'https:' ? 443 : document.location.port);
-  }
-  else {
-    host = host || 'localhost';
+  if (useTime) var time = String(Date.now());
 
-    if (!port && protocol == 'https') {
-      port = 443;
-    }
-  }
-
-  return (protocol || 'http') + '://' + host + ':' + (port || 80);
-};
-
-Client.prototype.connect = function() {
-  if (this.socket) {
-    this.socket.removeAllListeners();
-  }
-  this.socket = new eio.Socket(this.options);
-  var self = this;
-  this.socket.on('open', function() {
-    self.connected = true;
-    self.reconnectAttempts = 0;
-    self.reconnectTimeout = self.options.reconnectTimeout;
-    self.emit('connect');
-  });
-  this.socket.on('close', function(reason, desc) {
-    self.connected = false;
-    if (reason === 'forced close') {
-      self.emit('close', reason, desc);
-    }
-    else if (self.reconnectAttempts === 0) {
-      self.emit('reconnecting');
-      self.reconnectAttempts++;
-      self.connect();
+  while (len_left--) {
+    if (useTime && time) {
+      idx = Number(time.slice(0, 2)) % range;
+      time = time.slice(2);
     }
     else {
-      self.reconnectAttempts++;
-      self.reconnectTimeout *= self.options.reconnectBackoff;
-      setTimeout(function() {
-        if (self.connected) {
-          return;
-        }
-        self.connect();
-      }, self.reconnectTimeout);
+      idx = Math.round(Math.random() * range);
     }
-  });
-  this.socket.on('error', function(err) {
-    self.emit('error', err);
-  });
-  this.socket.on('message', function(msg) {
-    var unpacked = hydration.hydrate(JSON.parse(msg))
-    if (unpacked.ev) {
-      self.emit.apply(self, [unpacked.ev].concat(unpacked.args));
-    }
-  });
+    ret += chars.charAt(idx);
+  }
+  return ret;
 };
-Client.prototype.send = function(ev, args) {
-  if (Object.prototype.toString.call(ev) === '[object Array]') {
-    args = ev;
-    ev = args.shift();
-  }
-  else {
-    args = Array.prototype.slice.call(arguments, 1);
-  }
-  var cb;
-  if (typeof args[args.length - 1] === 'function') {
-    cb = args.pop();
-  }
-  var envelope = {
-    ev: ev,
-    args: args
-  };
-  if (cb) {
-    envelope.ack = idgen();
-    this.on(envelope.ack, cb);
-  }
-  this.socket.send(JSON.stringify(hydration.dehydrate(envelope)));
+module.exports = idgen;
+
+function idgen_hex(len) {
+  len = len || 16;
+  return idgen(len, '0123456789abcdef');
 };
-Client.prototype.close = function(reason, desc) {
-  this.socket.close(reason, desc);
-};
-});oil = require('engine.oil-client');
-})();
+module.exports.hex = idgen_hex;
+
+});
+require.alias("component-emitter/index.js", "oil/deps/emitter/index.js");
+require.alias("component-emitter/index.js", "emitter/index.js");
+
+require.alias("LearnBoost-engine.io-client/lib/index.js", "oil/deps/engine.io/lib/index.js");
+require.alias("LearnBoost-engine.io-client/lib/socket.js", "oil/deps/engine.io/lib/socket.js");
+require.alias("LearnBoost-engine.io-client/lib/transport.js", "oil/deps/engine.io/lib/transport.js");
+require.alias("LearnBoost-engine.io-client/lib/emitter.js", "oil/deps/engine.io/lib/emitter.js");
+require.alias("LearnBoost-engine.io-client/lib/util.js", "oil/deps/engine.io/lib/util.js");
+require.alias("LearnBoost-engine.io-client/lib/transports/index.js", "oil/deps/engine.io/lib/transports/index.js");
+require.alias("LearnBoost-engine.io-client/lib/transports/polling.js", "oil/deps/engine.io/lib/transports/polling.js");
+require.alias("LearnBoost-engine.io-client/lib/transports/polling-xhr.js", "oil/deps/engine.io/lib/transports/polling-xhr.js");
+require.alias("LearnBoost-engine.io-client/lib/transports/polling-jsonp.js", "oil/deps/engine.io/lib/transports/polling-jsonp.js");
+require.alias("LearnBoost-engine.io-client/lib/transports/websocket.js", "oil/deps/engine.io/lib/transports/websocket.js");
+require.alias("LearnBoost-engine.io-client/lib/transports/flashsocket.js", "oil/deps/engine.io/lib/transports/flashsocket.js");
+require.alias("LearnBoost-engine.io-client/lib/index.js", "oil/deps/engine.io/index.js");
+require.alias("LearnBoost-engine.io-client/lib/index.js", "engine.io/index.js");
+require.alias("component-emitter/index.js", "LearnBoost-engine.io-client/deps/emitter/index.js");
+
+require.alias("component-indexof/index.js", "LearnBoost-engine.io-client/deps/indexof/index.js");
+
+require.alias("LearnBoost-engine.io-protocol/lib/index.js", "LearnBoost-engine.io-client/deps/engine.io-parser/lib/index.js");
+require.alias("LearnBoost-engine.io-protocol/lib/keys.js", "LearnBoost-engine.io-client/deps/engine.io-parser/lib/keys.js");
+require.alias("LearnBoost-engine.io-protocol/lib/index.js", "LearnBoost-engine.io-client/deps/engine.io-parser/index.js");
+require.alias("LearnBoost-engine.io-protocol/lib/index.js", "LearnBoost-engine.io-protocol/index.js");
+
+require.alias("visionmedia-debug/index.js", "LearnBoost-engine.io-client/deps/debug/index.js");
+require.alias("visionmedia-debug/debug.js", "LearnBoost-engine.io-client/deps/debug/debug.js");
+
+require.alias("LearnBoost-engine.io-client/lib/index.js", "LearnBoost-engine.io-client/index.js");
+
+require.alias("carlos8f-hydration/index.js", "oil/deps/hydration/index.js");
+require.alias("carlos8f-hydration/index.js", "oil/deps/hydration/index.js");
+require.alias("carlos8f-hydration/index.js", "hydration/index.js");
+require.alias("carlos8f-hydration/index.js", "carlos8f-hydration/index.js");
+
+require.alias("carlos8f-node-idgen/index.js", "oil/deps/idgen/index.js");
+require.alias("carlos8f-node-idgen/index.js", "oil/deps/idgen/index.js");
+require.alias("carlos8f-node-idgen/index.js", "idgen/index.js");
+require.alias("carlos8f-node-idgen/index.js", "carlos8f-node-idgen/index.js");
+
+require.alias("oil/client/engine.oil-client.js", "oil/index.js");
+
+if (typeof exports == "object") {
+  module.exports = require("oil");
+} else if (typeof define == "function" && define.amd) {
+  define(function(){ return require("oil"); });
+} else {
+  this["oil"] = require("oil");
+}})();

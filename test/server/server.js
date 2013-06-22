@@ -7,7 +7,6 @@ var http = require('http')
   , path = require('path')
   , pub = path.resolve(__dirname, './public')
   , middler = require('middler')
-  ;
 
 var buffet = require('buffet')(pub);
 

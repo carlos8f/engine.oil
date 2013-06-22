@@ -9,12 +9,8 @@ test:
 		--bail
 
 build:
-	cp ./node_modules/engine.io-client/engine.io.js public/engine.io.js
-	cat ./node_modules/hydration/hydration.js >> public/engine.io.js
-	cat ./node_modules/idgen/idgen.js >> public/engine.io.js
-	@./node_modules/.bin/browserbuild \
-		-g oil \
-		-m engine.oil-client -b client/ \
-		client >> public/engine.io.js
+	@component build --standalone oil
+	@mv build/build.js public/engine.io.js
+	@rm -rf build
 
 .PHONY: test

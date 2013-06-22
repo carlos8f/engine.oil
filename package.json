@@ -13,10 +13,9 @@
   "main": "./lib/engine.oil",
   "dependencies": {
     "engine.io": "~0.6.2",
-    "buffet": "~0.3.6",
+    "buffet": "~0.6.0",
     "hydration": "~0.3.0",
-    "debug": "~0.7.0",
-    "middler": "~0.1.0"
+    "middler": "~0.6.1"
   },
   "keywords": [
     "socket",
@@ -25,16 +24,10 @@
     "realtime"
   ],
   "devDependencies": {
-    "engine.io-client": "~0.6.2",
-    "browserbuild": "~0.5.0",
     "mocha": "*",
     "optimist": "~0.3.4",
-    "zombie": "~1.3.1",
-    "idgen": "~1.1.2"
+    "zombie": "~1.3.1"
   },
   "license": "MIT",
-  "optionalDependencies": {},
-  "engines": {
-    "node": ">= 0.6.0"
-  }
+  "optionalDependencies": {}
 }
