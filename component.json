@@ -1,0 +1,15 @@
+{
+  "name": "oil",
+  "repo": "carlos8f/engine.oil",
+  "version": "0.4.0",
+  "dependencies": {
+    "component/emitter": "1.0.0",
+    "LearnBoost/engine.io-client": "0.6.2",
+    "carlos8f/hydration": "v0.5.0",
+    "carlos8f/node-idgen": "v1.3.0"
+  },
+  "main": "lib/client.js",
+  "scripts": [
+    "lib/client.js"
+  ]
+}

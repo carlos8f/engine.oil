@@ -1,4 +1,4 @@
-var client = oil.connect({transports: ['polling'], upgrade: false}), nick;
+var client = oil.connect(), nick;
 
 client.on('connect', function() {
   message('System', 'Connected to the server');

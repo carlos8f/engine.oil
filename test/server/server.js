@@ -7,12 +7,11 @@ var http = require('http')
   , path = require('path')
   , pub = path.resolve(__dirname, './public')
   , middler = require('middler')
-  ;
 
 var buffet = require('buffet')(pub);
 
 var server = http.createServer();
-var io = engine.attach(server, {transports: ['polling'], allowUpgrades: false});
+var io = engine.attach(server);
 middler(server, buffet);
 middler(server, buffet.notFound);
 
