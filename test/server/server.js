@@ -11,7 +11,7 @@ var http = require('http')
 var buffet = require('buffet')(pub);
 
 var server = http.createServer();
-var io = engine.attach(server, {transports: ['polling'], allowUpgrades: false});
+var io = engine.attach(server);
 middler(server, buffet);
 middler(server, buffet.notFound);
 
