@@ -9,8 +9,6 @@ test:
 		--bail
 
 build:
-	@component build --standalone oil
-	@mv build/build.js public/engine.io.js
-	@rm -rf build
+	@./node_modules/.bin/component build --standalone oil --out public --name engine.io
 
 .PHONY: test

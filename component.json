@@ -8,5 +8,8 @@
     "carlos8f/hydration": "v0.5.0",
     "carlos8f/node-idgen": "v1.3.0"
   },
-  "main": "client/engine.oil-client.js"
+  "main": "lib/client.js",
+  "scripts": [
+    "lib/client.js"
+  ]
 }
