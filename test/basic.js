@@ -3,6 +3,7 @@ var Browser = require("zombie")
   , spawn = require('child_process').spawn
   , port = Math.round(Math.random() * 20000 + 20000)
   , resolve = require('path').resolve
+  , idgen = require('idgen')
 
 describe('chat test', function() {
   var server, browser1, browser2;
@@ -68,6 +69,22 @@ describe('chat test', function() {
       .pressButton('Send', function() {
         setTimeout(function() {
           assert.equal(browser2.text('#lines'), 'SystemConnected to the serverbrowser1 connectedmehello there!browser1why hello!');
+          done();
+        }, 1000);
+      });
+  });
+  var shortChat = idgen(), longChat = idgen(64000);
+  it('browser1 chats something short', function(done) {
+    browser1
+      .fill('message', shortChat)
+      .pressButton('Send', done);
+  });
+  it('browser1 chats something really long', function(done) {
+    browser1
+      .fill('message', longChat)
+      .pressButton('Send', function() {
+        setTimeout(function() {
+          assert.equal(browser2.text('#lines'), 'SystemConnected to the serverbrowser1 connectedmehello there!browser1why hello!browser1' + shortChat + 'browser1' + longChat);
           done();
         }, 1000);
       });
