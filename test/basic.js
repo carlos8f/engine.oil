@@ -26,6 +26,9 @@ describe('chat test', function() {
       done();
     });
   });
+  after(function() {
+    server.kill();
+  });
 
   it('browser1 logs in', function(done) {
     browser1
